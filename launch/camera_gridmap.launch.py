@@ -18,8 +18,10 @@ def generate_launch_description():
             "camera_name": "camera",
             "serial_no": LaunchConfiguration("serial_no"),
             "enable_depth": "true",
-            "enable_color": "true",
+            "enable_color": "false",
+            "depth_module.depth_profile": "424x240x15",
             "pointcloud.enable": "true",
+            "pointcloud.stream_filter": "0",
             "publish_tf": "true",
         }.items(),
     )
