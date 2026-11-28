@@ -12,7 +12,8 @@ sudo apt install git build-essential cmake python3-colcon-common-extensions \
   ros-humble-ament-cmake ros-humble-ament-index-cpp \
   ros-humble-rclcpp ros-humble-sensor-msgs ros-humble-grid-map-msgs \
   ros-humble-visualization-msgs ros-humble-tf2 ros-humble-tf2-ros \
-  ros-humble-tf2-eigen ros-humble-realsense2-camera
+  ros-humble-tf2-eigen ros-humble-realsense2-camera \
+  ros-humble-rviz2 ros-humble-grid-map-rviz-plugin
 ```
 
 ## Download
@@ -46,9 +47,48 @@ source install/setup.bash
 
 ## Run
 
+Source the workspace in every new terminal:
+
 ```bash
 source /opt/ros/humble/setup.bash
 source ~/meldog_ws/install/setup.bash
+```
+
+### Camera + grid map node
+
+Starts the RealSense camera and the grid map node:
+
+```bash
 ros2 launch meldog_gridmap camera_gridmap.launch.py
 ```
+
+### Camera + grid map node + RViz
+
+Does the same and also opens RViz2 with `config/rviz_config.rviz`
+(point cloud, grid map and TF displays):
+
+```bash
+ros2 launch meldog_gridmap camera_gridmap_rviz.launch.py
+```
+
+### Launch arguments
+
+Both launch files accept these arguments:
+
+```bash
+# Select a specific camera (serial number with a leading underscore)
+ros2 launch meldog_gridmap camera_gridmap.launch.py serial_no:=_123456789
+
+# Publish the grid map on a different topic
+ros2 launch meldog_gridmap camera_gridmap.launch.py gridmap_topic:=/my_gridmap
+
+# Use a different RViz config (RViz launch file only)
+ros2 launch meldog_gridmap camera_gridmap_rviz.launch.py rviz_config:=/path/to/config.rviz
+
+# List all available arguments
+ros2 launch meldog_gridmap camera_gridmap_rviz.launch.py --show-args
+```
+
+The RViz config subscribes to `/gridmap`. If you change `gridmap_topic`, update
+the topic of the GridMap display in RViz as well.
 
